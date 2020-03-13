@@ -61,7 +61,7 @@ public:
   void compileModule(std::unique_ptr<Module> M)
   {
     auto mod = addModule(move(M));
-    cantFail(CompileLayer.emitAndFinalize(mod));
+    CompileLayer.emitAndFinalize(mod);
   }
 
   ModuleHandle addModule(std::unique_ptr<Module> M)
