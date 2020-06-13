@@ -37,6 +37,7 @@ enum class DebugLevel;
 // globals
 extern DebugLevel bt_debug;
 extern bool bt_verbose;
+extern bool bt_quiet;
 
 enum class DebugLevel
 {

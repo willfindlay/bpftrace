@@ -61,6 +61,7 @@ void usage()
   std::cerr << "                   activate usdt semaphores based on file path" << std::endl;
   std::cerr << "    --unsafe       allow unsafe builtin functions" << std::endl;
   std::cerr << "    -v             verbose messages" << std::endl;
+  std::cerr << "    -q             silence all output that does not come from the bpftrace program" << std::endl;
   std::cerr << "    --info         Print information about kernel BPF support" << std::endl;
   std::cerr << "    -k             emit a warning when a bpf helper returns an error (except read functions)" << std::endl;
   std::cerr << "    -kk            check all bpf helper functions" << std::endl;
@@ -190,7 +191,7 @@ int main(int argc, char *argv[])
   OutputBufferConfig obc = OutputBufferConfig::UNSET;
   int c;
 
-  const char* const short_options = "dbB:f:e:hlp:vc:Vo:I:k";
+  const char* const short_options = "dbB:f:e:hlp:vqc:Vo:I:k";
   option long_options[] = {
     option{ "help", no_argument, nullptr, 'h' },
     option{ "version", no_argument, nullptr, 'V' },
@@ -225,6 +226,9 @@ int main(int argc, char *argv[])
         break;
       case 'v':
         bt_verbose = true;
+        break;
+      case 'q':
+        bt_quiet = true;
         break;
       case 'B':
         if (std::strcmp(optarg, "line") == 0) {
@@ -297,6 +301,13 @@ int main(int argc, char *argv[])
   {
     // TODO: allow both
     std::cerr << "USAGE: Use either -v or -d." << std::endl;
+    return 1;
+  }
+
+  if (bt_quiet && (bt_verbose || (bt_debug != DebugLevel::kNone)))
+  {
+    std::cerr << "USAGE: Cannot use -q with -v or -d." << std::endl;
+    usage();
     return 1;
   }
 

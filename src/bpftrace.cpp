@@ -47,6 +47,7 @@ namespace bpftrace {
 
 DebugLevel bt_debug = DebugLevel::kNone;
 bool bt_verbose = false;
+bool bt_quiet = false;
 volatile sig_atomic_t BPFtrace::exitsig_recv = false;
 
 int format(char * s, size_t n, const char * fmt, std::vector<std::unique_ptr<IPrintable>> &args) {

@@ -312,6 +312,8 @@ void TextOutput::lost_events(uint64_t lost) const
 
 void TextOutput::attached_probes(uint64_t num_probes) const
 {
+  if (bt_quiet)
+      return;
   if (num_probes == 1)
     out_ << "Attaching " << num_probes << " probe..." << std::endl;
   else
